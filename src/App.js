@@ -9,19 +9,24 @@ import 'firebase/analytics';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+import "./main.scss"
+
 firebase.initializeApp({
-  // your config
+  apiKey: "AIzaSyDM2BvCcimD-TExXUtr8Brad_kyctmCjy8",
+  authDomain: "sesh-8c8f0.firebaseapp.com",
+  projectId: "sesh-8c8f0",
+  storageBucket: "sesh-8c8f0.appspot.com",
+  messagingSenderId: "1023962120664",
+  appId: "1:1023962120664:web:bc5937ce9e6b816c3972ad"
 })
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 const analytics = firebase.analytics();
 
-
 function App() {
 
   const [user] = useAuthState(auth);
-
   return (
     <div className="App">
       <header>
@@ -35,6 +40,15 @@ function App() {
 
     </div>
   );
+}
+
+function PlanPanel({handlePlan}) {
+  return (
+    <div className="sesh-panel">
+      <h3 onClick={handlePlan}>This is the plan Pannel</h3>
+    </div>
+
+  )
 }
 
 function SignIn() {
@@ -52,6 +66,7 @@ function SignIn() {
   )
 
 }
+
 
 function SignOut() {
   return auth.currentUser && (
@@ -86,7 +101,13 @@ function ChatRoom() {
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
+  const [showPlan, changeShowPlan] = useState(false)
+
+  const handlePlan = () => {
+    changeShowPlan(!showPlan)
+  }
   return (<>
+    {showPlan ? <PlanPanel handlePlan={handlePlan}/> : <button className="plan-btn" onClick={handlePlan}>Plan</button>}
     <main>
 
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
